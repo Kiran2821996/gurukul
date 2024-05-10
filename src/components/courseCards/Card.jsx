@@ -3,7 +3,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../redux/cartSlice';
 
-const Card = ({ price, currency, videoId, title, offerPrice, percentage, id }) => {
+const Card = ({ price, currency, videoId, title, offerPrice, percentage, _id }) => {
   const [open, setOpen] = useState(false)
 
   const cancelButtonRef = useRef(null)
@@ -11,10 +11,11 @@ const Card = ({ price, currency, videoId, title, offerPrice, percentage, id }) =
 
   const cart = useSelector((state) => state.cart)
 
-  const isInCart = cart.some(item => item.id === id);
+  const isInCart = cart.some(item => item._id === _id);
+  console.log(cart,_id);
 
   return (
-    <div className="-mt-2 p-2" id={id}>
+    <div className="-mt-2 p-2" id={_id}>
       <div className="rounded-2xl bg-amber-500 pt-10 text-center ring-1 ring-inset ring-gray-900/5 lg:flex lg:flex-col lg:justify-center lg:pt-16">
         <div className="px-8">
           <div>
@@ -36,7 +37,7 @@ const Card = ({ price, currency, videoId, title, offerPrice, percentage, id }) =
             <button
               onClick={() =>
                 dispatch(addToCart({
-                  id, title, price
+                  _id, title, price
                 }))
               }
               className={`w-56 border-2 border-transparent text-center rounded-md px-1 py-2 lg:px-3.5 lg:py-2.5  text-md lg:text-lg  font-semibold shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${

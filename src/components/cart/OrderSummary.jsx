@@ -9,7 +9,7 @@ export default function OrderSummary({id, price, title, quantity = 0 }) {
     const dispatch = useDispatch()
     return (
         
-            <tr className='border-collapse border-b-2 border-b-solid border-gray-300'>
+            <tr key={id} className='border-collapse border-b-2 border-b-solid border-gray-300'>
                 <td className='text-left pt-4 pb-1 text-md lg:text-lg'>{title}</td>
                 <td className='text-center pt-4 pb-1 text-md lg:text-lg'>{quantity}</td>
                 <td className='text-center pt-4 pb-1 text-md lg:text-lg'>₹{price}</td>

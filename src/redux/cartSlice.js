@@ -8,7 +8,7 @@ const cartSlice = createSlice({
   },
   reducers: {
     addToCart: (state, action) => {
-      const itemIndex = state.cart.findIndex((item) => item.id === action.payload.id);
+      const itemIndex = state.cart.findIndex((item) => item._id === action.payload._id);
       if (itemIndex !== -1) {
         state.cart.splice(itemIndex, 1);
       } else {
@@ -28,7 +28,7 @@ const cartSlice = createSlice({
       }
     },
     removeItem: (state, action) => {
-      const removeItem = state.cart.filter((item) => item.id !== action.payload);
+      const removeItem = state.cart.filter((item) => item._id !== action.payload);
       state.cart = removeItem;
     },
     clearLocalStorage: () => {
