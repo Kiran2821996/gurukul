@@ -40,47 +40,67 @@ export default function Cart() {
         setOpen(false)
         setOpenpd(true)
     }
-
     const [formData, setFormData] = useState({
+        name: '',
+        mobile: '',
         email: '',
+        confirmEmail: ''
     });
 
     const [formErrors, setFormErrors] = useState({
+        name: '',
+        mobile: '',
         email: '',
+        confirmEmail: ''
     });
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
-        setFormErrors({ ...formErrors, [name]: '' });
+    };
+
+
+    const validateForm = (data) => {
+        let errors = {};
+
+        if (!data.name.trim()) {
+            errors.name = 'Name is required';
+        }
+
+        if (!data.mobile.trim()) {
+            errors.mobile = 'Mobile number is required';
+        } else if (!/^\d{10}$/.test(data.mobile)) {
+            errors.mobile = 'Invalid mobile number';
+        }
+
+        if (!data.email.trim()) {
+            errors.email = 'Email is required';
+        } else if (!/\S+@\S+\.\S+/.test(data.email)) {
+            errors.email = 'Invalid email address';
+        }
+
+        if (!data.confirmEmail.trim()) {
+            errors.confirmEmail = 'Confirm email is required';
+        } else if (data.email !== data.confirmEmail) {
+            errors.confirmEmail = 'Emails do not match';
+        }
+
+        return errors;
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Perform validation
-        let isValid = true;
-        const errors = {};
-
-        if (!formData.email) {
-            isValid = false;
-            errors.email = 'Email address is required';
-        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-            isValid = false;
-            errors.email = 'Please enter a valid email address';
-        }
-
-        if (!isValid) {
-            setFormErrors(errors);
-        } else {
-            console.log(formData);
+        const errors = validateForm(formData);
+        if (Object.keys(errors).length === 0) {
             setOpen(false);
             setOpenpd(false);
             setOpenpg(true);
-            setFormData({
-                email: '',
-            });
+            console.log('Form submitted:', formData);
+        } else {
+            setFormErrors(errors);
         }
     };
+
 
     window.onbeforeunload = function () {
         window.scrollTo(0, 0);
@@ -247,24 +267,84 @@ export default function Cart() {
                                         </div>
                                     </div>
                                     <form onSubmit={handleSubmit}>
-                                        <div className="mt-6 px-4 lg:px-6 gap-x-4">
-                                            <label htmlFor="email" className="sr-only">
-                                                Email address
-                                            </label>
-                                            <input
-                                                id="email"
-                                                name="email"
-                                                type="email"
-                                                autoComplete="email"
-                                                value={formData.email}
-                                                onChange={handleInputChange}
-                                                required
-                                                className="min-w-0 w-full bg-grey-cust flex-auto rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-amber-500 sm:text-sm sm:leading-6"
-                                                placeholder="Enter your email"
-                                            />
-                                            {formErrors.email && (
-                                                <p className="text-red-500">{formErrors.email}</p>
-                                            )}
+                                        <div className="mt-2 px-4 lg:px-6 gap-x-4">
+                                            <div className='mt-3'>
+                                                <label htmlFor="name" className="sr-only">
+                                                    Name
+                                                </label>
+                                                <input
+                                                    id="name"
+                                                    name="name"
+                                                    type="text"
+                                                    autoComplete="name"
+                                                    value={formData.name}
+                                                    onChange={handleInputChange}
+                                                    required
+                                                    className="min-w-0 w-full bg-grey-cust flex-auto rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-amber-500 sm:text-sm sm:leading-6"
+                                                    placeholder="Enter your name"
+                                                />
+                                                {formErrors.name && (
+                                                    <p className="text-red-500">{formErrors.name}</p>
+                                                )}
+                                            </div>
+                                            <div className='mt-3'>
+
+                                                <label htmlFor="mobile" className="sr-only">
+                                                    Mobile Number
+                                                </label>
+                                                <input
+                                                    id="mobile"
+                                                    name="mobile"
+                                                    type="tel"
+                                                    autoComplete="tel"
+                                                    value={formData.mobile}
+                                                    onChange={handleInputChange}
+                                                    required
+                                                    className="min-w-0 w-full bg-grey-cust flex-auto rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-amber-500 sm:text-sm sm:leading-6"
+                                                    placeholder="Enter your mobile number"
+                                                />
+                                                {formErrors.mobile && (
+                                                    <p className="text-red-500">{formErrors.mobile}</p>
+                                                )}
+                                            </div>
+                                            <div className='mt-3'>
+                                                <label htmlFor="email" className="sr-only">
+                                                    Email address
+                                                </label>
+                                                <input
+                                                    id="email"
+                                                    name="email"
+                                                    type="email"
+                                                    autoComplete="email"
+                                                    value={formData.email}
+                                                    onChange={handleInputChange}
+                                                    required
+                                                    className="min-w-0 w-full bg-grey-cust flex-auto rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-amber-500 sm:text-sm sm:leading-6"
+                                                    placeholder="Enter your email"
+                                                />
+                                                {formErrors.email && (
+                                                    <p className="text-red-500">{formErrors.email}</p>
+                                                )}
+                                            </div>
+                                            <div className='mt-3'>
+                                                <label htmlFor="confirmEmail" className="sr-only">
+                                                    Confirm Email address
+                                                </label>
+                                                <input
+                                                    id="confirmEmail"
+                                                    name="confirmEmail"
+                                                    type="email"
+                                                    autoComplete="email"
+                                                    value={formData.confirmEmail}
+                                                    onChange={handleInputChange}
+                                                    required
+                                                    className="min-w-0 w-full bg-grey-cust flex-auto rounded-md border-0 bg-white/5 px-3.5 py-2 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-amber-500 sm:text-sm sm:leading-6"
+                                                    placeholder="Confirm your email"
+                                                />
+                                                {formErrors.confirmEmail && (
+                                                    <p className="text-red-500">{formErrors.confirmEmail}</p>
+                                                )}
+                                            </div>
                                         </div>
                                         <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                                             <button
@@ -283,7 +363,6 @@ export default function Cart() {
                                             </button>
                                         </div>
                                     </form>
-
                                 </Dialog.Panel>
                             </Transition.Child>
                         </div>
